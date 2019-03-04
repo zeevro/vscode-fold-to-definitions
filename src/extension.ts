@@ -45,9 +45,9 @@ function foldToDefinitions(classes: boolean = false) {
 				return !symbol.range.isSingleLine;
 			});
 
-			allSymbols.sort((a, b) => {
-				return b.range.start.line - a.range.start.line;
-			});
+			//allSymbols.sort((a, b) => {
+			//	return b.range.start.line - a.range.start.line;
+			//});
 
 			//console.log("allSymbols", symbols);
 
@@ -66,20 +66,14 @@ function populateAllSymbols(source: vscode.DocumentSymbol[], dest: vscode.Docume
 }
 
 async function actuallyFold(activeEditor: vscode.TextEditor, symbols: vscode.DocumentSymbol[]) {
-	let original_selection = activeEditor.selection;
-
 	await vscode.commands.executeCommand("editor.unfoldAll");
 
+	let lines: number[] = [];
 	for (let symbol of symbols) {
-		let symbolLocation = symbol.selectionRange.start;
-		console.log("Folding", vscode.SymbolKind[symbol.kind], symbol.name, "in line", symbolLocation.line + 1, "character", symbolLocation.character + 1);
-		activeEditor.selection = new vscode.Selection(symbolLocation, symbolLocation);
-		
-		if (symbol.range.contains(original_selection)) {
-			original_selection = activeEditor.selection;
-		}
-		await vscode.commands.executeCommand("editor.fold");
+		console.log("Folding", vscode.SymbolKind[symbol.kind], symbol.name, "in line", symbol.selectionRange.start.line + 1);
+
+		lines.push(symbol.selectionRange.start.line);	
 	}
 
-	activeEditor.selection = original_selection;
+	await vscode.commands.executeCommand("editor.fold", {selectionLines: lines});
 }

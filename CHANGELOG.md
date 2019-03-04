@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.5
+
+Now folds a lot faster
+
+
 ## 0.5.4
 
 Added the SymbolKind.Operator to list of collapsible symbols

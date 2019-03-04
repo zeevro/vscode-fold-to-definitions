@@ -1,0 +1,57 @@
+{
+	"name": "fold-to-definitions",
+	"displayName": "Fold To Definitions",
+	"description": "Fold all the functions and methods (and classes, too) but nothing else.",
+	"publisher": "zeevro",
+	"version": "0.5.2",
+	"engines": {
+		"vscode": "^1.31.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.fold_to_definitions"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.fold_to_definitions",
+				"title": "Fold to definitions"
+			},
+			{
+				"command": "extension.fold_to_class_definitions",
+				"title": "Fold to class definitions"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.fold_to_definitions",
+				"key": "ctrl+k k",
+				"mac": "cmd+k k",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "extension.fold_to_class_definitions",
+				"key": "ctrl+k l",
+				"mac": "cmd+k l",
+				"when": "editorTextFocus"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.28",
+		"tslint": "^5.12.1",
+		"@types/node": "^10.12.21",
+		"@types/mocha": "^2.2.42"
+	}
+}

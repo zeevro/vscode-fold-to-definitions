@@ -3,6 +3,7 @@
 	"displayName": "Fold To Definitions",
 	"description": "Fold all the functions and methods (and classes, too) but nothing else.",
 	"publisher": "zeevro",
+	"repository": "https://github.com/zeevro/vscode-fold-to-definitions"
 	"version": "0.5.2",
 	"engines": {
 		"vscode": "^1.31.0"

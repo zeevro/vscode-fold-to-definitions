@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
-let KINDS_TO_FOLD = [vscode.SymbolKind.Method, vscode.SymbolKind.Property, vscode.SymbolKind.Constructor, vscode.SymbolKind.Function];
-let KINDS_TO_FOLD_CLASSES = [vscode.SymbolKind.Class];
+let KINDS_TO_FOLD = [vscode.SymbolKind.Method, vscode.SymbolKind.Property, vscode.SymbolKind.Constructor, vscode.SymbolKind.Function, vscode.SymbolKind.Operator];
+let KINDS_TO_FOLD_CLASSES = [vscode.SymbolKind.Class, vscode.SymbolKind.Interface];
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('extension.fold_to_definitions', foldToDefinitions));
@@ -41,6 +41,10 @@ function foldToDefinitions(classes: boolean = false) {
 				return kinds.includes(symbol.kind);
 			});
 
+			allSymbols = allSymbols.filter(symbol => {
+				return !symbol.range.isSingleLine;
+			});
+
 			allSymbols.sort((a, b) => {
 				return b.range.start.line - a.range.start.line;
 			});
@@ -67,8 +71,10 @@ async function actuallyFold(activeEditor: vscode.TextEditor, symbols: vscode.Doc
 	await vscode.commands.executeCommand("editor.unfoldAll");
 
 	for (let symbol of symbols) {
-		console.log("Folding", vscode.SymbolKind[symbol.kind], symbol.name, "in line", symbol.range.start.line);
-		activeEditor.selection = new vscode.Selection(symbol.selectionRange.start, symbol.selectionRange.start);
+		let symbolLocation = symbol.selectionRange.start;
+		console.log("Folding", vscode.SymbolKind[symbol.kind], symbol.name, "in line", symbolLocation.line + 1, "character", symbolLocation.character + 1);
+		activeEditor.selection = new vscode.Selection(symbolLocation, symbolLocation);
+		
 		if (symbol.range.contains(original_selection)) {
 			original_selection = activeEditor.selection;
 		}

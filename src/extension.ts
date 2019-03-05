@@ -72,7 +72,7 @@ async function actuallyFold(activeEditor: vscode.TextEditor, symbols: vscode.Doc
 	for (let symbol of symbols) {
 		console.log("Folding", vscode.SymbolKind[symbol.kind], symbol.name, "in line", symbol.selectionRange.start.line + 1);
 
-		lines.push(symbol.selectionRange.start.line);	
+		lines.push(symbol.selectionRange.start.line);
 	}
 
 	await vscode.commands.executeCommand("editor.fold", {selectionLines: lines});
